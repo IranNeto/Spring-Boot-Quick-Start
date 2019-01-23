@@ -1,4 +1,4 @@
-package io.javabrains.springbootstarter.topic;
+package io.javabrains.springbootstarter.course;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,42 +15,41 @@ import org.springframework.stereotype.Service;
 //as a Singleton it needs the instance that spring created as service
 
 @Service
-public class TopicService {
+public class CourseService {
 	//When Spring executes this method it return an object (list of topics)
 	//This object is automatically converted to a JSON
 	
 	//The generated JSON has key names corresponding to property names of Topic class
 	//and their values are the values of those properties
 	
-	private List<Topic> topics = new ArrayList<>();
+	private List<Course> courses = new ArrayList<>();
 	
 	@Autowired
-	private TopicDAO topicdao;
+	private CourseDAO coursedao;
 	
-	public List<Topic> getAllTopics(){
-		List<Topic> topics = new ArrayList<>();
-		topicdao.findAll().forEach(topics::add);
-		return topics;
+	
+	public List<Course> getAllCourses(String topicId){
+		return coursedao.findByTopicId(topicId);
 	}
 	
 	//Java 8 way to do this more elegant. With streams and lambda functions
-	public Topic getTopic(String id) {
-		return topicdao.findById(id).get();
+	public Course getCourse(String id) {
+		return coursedao.findById(id).get();
 	}
 
-	public void addTopic(Topic topic) {
-		topicdao.save(topic);
+	public void addCourse(Course course) {
+		coursedao.save(course);
 		
 	}
 
 	//the save method can add and update cause it's been passed a topic instance which has already been mapped by the id
-	public void updateTopic(String id, Topic topic) {
-		topicdao.save(topic);
+	public void updateCourse(Course course) {
+		coursedao.save(course);
 	}
 
-	public void deleteTopic(String id, Topic topic) {
+	public void deleteCourse(String id) {
 		//topics.removeIf(t -> t.getId().equals(id));
-		topicdao.delete(topic);
+		coursedao.deleteById(id);
 	}
 
 }
